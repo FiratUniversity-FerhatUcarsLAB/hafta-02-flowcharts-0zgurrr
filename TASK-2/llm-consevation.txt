@@ -1,0 +1,104 @@
+Tabii! 👇 Aşağıda **“Görev 2: Online Alışveriş Sepet Sistemi”** için ayrıntılı ama sade bir **pseudocode (kaba kod)** örneği bulunuyor.
+Bu yapı, sistemin tüm akışını mantıksal olarak açıklar ve ödev için gayet uygun düzeydedir.
+
+---
+
+### 💻 **Pseudocode – Online Alışveriş Sepet Sistemi**
+
+```
+BAŞLA
+
+YAZDIR("E-ticaret sitesine hoş geldiniz!")
+
+KULLANICI_GİRİŞ = GİR("Giriş yapmak ister misiniz? (E/H): ")
+
+EĞER KULLANICI_GİRİŞ == "H" İSE
+    YAZDIR("Giriş yapılmadan alışveriş yapılamaz.")
+    BİTİR
+DEĞİLSE
+    KULLANICI_ADI = GİR("Kullanıcı adınızı giriniz: ")
+    ŞİFRE = GİR("Şifrenizi giriniz: ")
+    EĞER GİRİŞ_KONTROL(KULLANICI_ADI, ŞİFRE) == HATALI İSE
+        YAZDIR("Kullanıcı adı veya şifre hatalı!")
+        BİTİR
+    SON
+SON
+
+YAZDIR("Giriş başarılı! Kategoriler arasında gezinebilirsiniz.")
+
+SEPET = BOŞ
+DEVAM = "E"
+
+DÖNGÜ KATEGORİ_GEZİNME DEVAM == "E" İKEN
+    YAZDIR("Kategoriler: Elektronik, Giyim, Kitap, Ev & Yaşam, vb.")
+    KATEGORİ = GİR("Bir kategori seçin: ")
+    ÜRÜN = GİR("Eklemek istediğiniz ürün adını yazın: ")
+
+    EĞER STOK_KONTROL(ÜRÜN) == YOKSA
+        YAZDIR("Üzgünüz, bu ürün stokta yok.")
+    DEĞİLSE
+        MİKTAR = GİR("Kaç adet eklemek istiyorsunuz?: ")
+        SEPETE_EKLE(SEPET, ÜRÜN, MİKTAR)
+        YAZDIR("Ürün sepete eklendi.")
+    SON
+
+    DEVAM = GİR("Başka bir ürün eklemek ister misiniz? (E/H): ")
+SON
+
+DÖNGÜ SEPET_DÜZENLEME
+    YAZDIR("Sepetinizdeki ürünler:")
+    SEPETİ_GÖRÜNTÜLE(SEPET)
+    DÜZENLE = GİR("Sepeti düzenlemek ister misiniz? (E/H): ")
+    EĞER DÜZENLE == "E" İSE
+        ÜRÜN = GİR("Kaldırmak istediğiniz ürün adını yazın: ")
+        ÜRÜN_SİL(SEPET, ÜRÜN)
+    DEĞİLSE
+        ÇIK
+    SON
+SON
+
+TOPLAM = HESAPLA_TOPLAM(SEPET)
+YAZDIR("Sepet toplamı: ", TOPLAM, " TL")
+
+İNDİRİM = GİR("İndirim kodunuz var mı? (E/H): ")
+EĞER İNDİRİM == "E" İSE
+    KOD = GİR("İndirim kodunu giriniz: ")
+    EĞER KOD_DOĞRU_MU(KOD) == EVET İSE
+        TOPLAM = TOPLAM * 0.9   // %10 indirim
+        YAZDIR("İndirim uygulandı. Yeni toplam: ", TOPLAM)
+    DEĞİLSE
+        YAZDIR("Geçersiz kod.")
+    SON
+SON
+
+EĞER TOPLAM < 50 İSE
+    YAZDIR("Minimum alışveriş tutarı 50 TL olmalıdır!")
+    BİTİR
+SON
+
+EĞER TOPLAM >= 200 İSE
+    KARGO = 0
+    YAZDIR("Kargo ücretsiz!")
+DEĞİLSE
+    KARGO = 30
+    TOPLAM = TOPLAM + KARGO
+    YAZDIR("Kargo ücreti: 30 TL. Yeni toplam: ", TOPLAM)
+SON
+
+YAZDIR("Ödeme yöntemleri: 1-Kredi Kartı, 2-Kapıda Ödeme, 3-Havale/EFT")
+ÖDEME = GİR("Ödeme yöntemini seçiniz (1/2/3): ")
+
+EĞER ÖDEME == 1 VEYA 2 VEYA 3 İSE
+    YAZDIR("Ödeme işlemi başarılı!")
+    YAZDIR("Sipariş onaylandı. Teşekkür ederiz!")
+DEĞİLSE
+    YAZDIR("Geçersiz seçim. İşlem iptal edildi.")
+SON
+
+BİTİR
+```
+
+---
+
+İstersen bu pseudocode’un **ödev açıklamasını** da (yani her adımın ne işe yaradığını anlatan açıklama metnini) ekleyebilirim.
+Hazırlayayım mı “Açıklama” kısmını da Görev 1’deki gibi?

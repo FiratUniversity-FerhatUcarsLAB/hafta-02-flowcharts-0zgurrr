@@ -1,0 +1,62 @@
+digraph HastaneRandevuVeTahlil {
+    rankdir=TB;
+    node [fontname="Helvetica", fontsize=10, style=filled, fillcolor=white];
+
+    // Başla / Bitir
+    start [shape=ellipse, label="Başla"];
+    end [shape=ellipse, label="Bitir"];
+
+    // Girdi / Çıktı
+    tc_input [shape=parallelogram, label="TC No giriniz"];
+    select_operation [shape=parallelogram, label="İşlem seç: 1-Randevu, 2-Tahlil"];
+    poliklinik_select [shape=parallelogram, label="Poliklinik seçimi"];
+    doctor_select [shape=parallelogram, label="Doktor seçimi"];
+    time_select [shape=parallelogram, label="Uygun saat seçimi"];
+    confirm_appointment [shape=parallelogram, label="Randevu onayı ve SMS gönder"];
+    show_result [shape=parallelogram, label="Tahlil sonucu görüntüle"];
+    wait_result [shape=parallelogram, label="Sonuç henüz hazır değil"];
+    download_pdf [shape=parallelogram, label="Sonuçları PDF indir"];
+    another_action [shape=parallelogram, label="Başka işlem yapmak ister misiniz? (E/H)"];
+
+    // İşlem kutuları
+    validate_tc [shape=box, label="TC No doğrula"];
+    loop_doctor_selection [shape=box, label="Doktor ve saat listesi döngüsü"];
+
+    // Kararlar (diamond)
+    tc_valid [shape=diamond, label="TC No geçerli mi?"];
+    operation_choice [shape=diamond, label="Randevu mu? Tahlil mi?"];
+    appointment_done [shape=diamond, label="Randevu tamamlandı mı?"];
+    test_exists [shape=diamond, label="Tahlil var mı?"];
+    result_ready [shape=diamond, label="Sonuç hazır mı?"];
+    another_action_decision [shape=diamond, label="Başka işlem yapmak istiyor mu?"];
+
+    // Akış bağlantıları
+    start -> tc_input -> validate_tc -> tc_valid;
+    tc_valid -> end [label="Hayır"];
+    tc_valid -> select_operation [label="Evet"];
+
+    select_operation -> operation_choice;
+    operation_choice -> poliklinik_select [label="Randevu"];
+    operation_choice -> test_exists [label="Tahlil"];
+
+    // Randevu akışı
+    poliklinik_select -> doctor_select -> time_select -> loop_doctor_selection;
+    loop_doctor_selection -> appointment_done;
+    appointment_done -> confirm_appointment [label="Evet"];
+    appointment_done -> doctor_select [label="Hayır"];
+    confirm_appointment -> another_action;
+
+    // Tahlil akışı
+    test_exists -> result_ready [label="Var"];
+    test_exists -> wait_result [label="Yok"];
+    wait_result -> another_action;
+    result_ready -> show_result [label="Hazır"];
+    result_ready -> wait_result [label="Hazır değil"];
+    show_result -> download_pdf;
+    download_pdf -> another_action;
+
+    // Döngü kontrolü
+    another_action -> another_action_decision;
+    another_action_decision -> select_operation [label="Evet"];
+    another_action_decision -> end [label="Hayır"];
+}

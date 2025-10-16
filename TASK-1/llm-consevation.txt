@@ -1,0 +1,88 @@
+Tabii!
+Aşağıda, “ATM Para Çekme Sistemi” için **kaba kod (pseudocode)** biçiminde, senin verdiğin tüm gereksinimleri içeren **adım adım algoritma** bulunuyor.
+Bu kod, gerçek bir program değil ama **programlama mantığını** açıkça gösterir — istersen sonradan Python, Java ya da başka dile çevirebiliriz.
+
+---
+
+### 💻 **KABA KOD (PSEUDOCODE) — ATM PARA ÇEKME SİSTEMİ**
+
+```text
+BAŞLA
+
+KART_TAK()
+
+PIN_DENEME = 0
+
+TEKRAR:
+    PIN = PIN_GİR()
+    EĞER PIN_DOĞRU(PIN) İSE
+        GİT BAKİYE_SORGULA
+    DEĞİLSE
+        PIN_DENEME = PIN_DENEME + 1
+        EĞER PIN_DENEME >= 3 İSE
+            YAZDIR("Kart bloke oldu. Lütfen banka ile iletişime geçin.")
+            KARTI_İADE_ET()
+            BİTİR
+        DEĞİLSE
+            YAZDIR("Yanlış PIN, tekrar deneyin.")
+            GİT TEKRAR
+        SON
+    SON
+
+BAKİYE_SORGULA:
+    BAKİYE = BAKİYE_ÖĞREN()
+    YAZDIR("Mevcut bakiyeniz: ", BAKİYE, " TL")
+
+    TUTAR_GİR:
+        ÇEKİLECEK_TUTAR = TUTAR_GİRİŞİ()
+        
+        EĞER ÇEKİLECEK_TUTAR % 20 != 0 İSE
+            YAZDIR("Tutar 20 TL'nin katı olmalı.")
+            GİT TUTAR_GİR
+        SON
+        
+        EĞER ÇEKİLECEK_TUTAR > GÜNLÜK_LIMIT İSE
+            YAZDIR("Günlük limit aşıldı.")
+            GİT TUTAR_GİR
+        SON
+        
+        EĞER ÇEKİLECEK_TUTAR > BAKİYE İSE
+            YAZDIR("Yetersiz bakiye.")
+            GİT TUTAR_GİR
+        SON
+        
+        PARA_VER(ÇEKİLECEK_TUTAR)
+        BAKİYE = BAKİYE - ÇEKİLECEK_TUTAR
+        MAKBUZ_YAZDIR()
+        
+        YAZDIR("İşlem başarılı. Kalan bakiye: ", BAKİYE, " TL")
+
+        BAŞKA_İŞLEM = SOR("Başka işlem yapmak ister misiniz? (E/H): ")
+        EĞER BAŞKA_İŞLEM == "E" İSE
+            GİT BAKİYE_SORGULA
+        DEĞİLSE
+            KARTI_İADE_ET()
+            YAZDIR("Teşekkürler, iyi günler.")
+            BİTİR
+        SON
+```
+
+---
+
+### 🔍 **Açıklama**
+
+* **PIN denemesi:** 3 defa yanlış girilirse kart bloke olur → işlem sonlanır.
+* **Koşullar:**
+
+  * Tutar 20 TL’nin katı olmalı
+  * Bakiye yeterli olmalı
+  * Günlük limit aşılmamalı
+* **Döngüler:**
+
+  * Yanlış PIN girildiğinde tekrar PIN istenir.
+  * Başka işlem yapmak istenirse sistem en başa döner.
+
+---
+
+İstersen bu kaba kodu **akış diyagramına (flowchart)** veya **Graphviz DOT** formatına da çevirebilirim.
+Hangisini istersin — diyagram mı yoksa bu kodun gerçek bir **Python sürümü** mü?

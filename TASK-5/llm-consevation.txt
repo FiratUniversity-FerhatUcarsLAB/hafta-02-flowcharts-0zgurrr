@@ -1,0 +1,68 @@
+Tabii Özgür! 😊
+Aşağıda **Akıllı Ev Güvenlik Sistemi** için hazırlanmış **Graphviz DOT kodu** bulunuyor. Bu diyagram, sistemin sürekli sensör kontrolü, tehdit tespiti, alarm seviyesi belirleme ve bildirim süreçlerini adım adım görselleştirir.
+
+---
+
+```dot
+digraph AkilliEvGuvenlik {
+    rankdir=TB;
+    node [fontname="Helvetica", fontsize=10, style=filled, fillcolor=white];
+
+    // Başla / Bitir
+    start [shape=ellipse, label="Başla"];
+    end [shape=ellipse, label="Bitir"];
+
+    // Girdi / Çıktı
+    sistem_durumu [shape=parallelogram, label="Sistem aktif mi kontrol et"];
+    hareket_sensor [shape=parallelogram, label="Hareket sensörünü oku"];
+    kapi_sensor [shape=parallelogram, label="Kapı sensörünü oku"];
+    pencere_sensor [shape=parallelogram, label="Pencere sensörünü oku"];
+    kamera_sensor [shape=parallelogram, label="Kamera sensörünü oku"];
+    bildirim [shape=parallelogram, label="Bildirim gönder (SMS + App + Email)"];
+    bekle [shape=parallelogram, label="Bekle ve tekrar kontrol et"];
+
+    // İşlem kutuları
+    alarm_ver [shape=box, label="Alarm ver"];
+    seviye_belirle [shape=box, label="Alarm seviyesi belirle"];
+
+    // Kararlar (diamond)
+    sistem_aktif [shape=diamond, label="Sistem aktif mi?"];
+    tehdit_var [shape=diamond, label="Tehdit algılandı mı?"];
+    ev_sahibi_evde [shape=diamond, label="Ev sahibi evde mi?"];
+    alarm_sifirla [shape=diamond, label="Alarm sıfırlansın mı?"];
+
+    // Akış bağlantıları
+    start -> sistem_durumu -> sistem_aktif;
+    sistem_aktif -> end [label="Hayır"];
+    sistem_aktif -> hareket_sensor [label="Evet"];
+
+    hareket_sensor -> kapi_sensor -> pencere_sensor -> kamera_sensor -> tehdit_var;
+
+    tehdit_var -> ev_sahibi_evde [label="Evet"];
+    tehdit_var -> seviye_belirle [label="Hayır"];
+
+    ev_sahibi_evde -> bekle [label="Evet (Yanlış alarm)"];
+    seviye_belirle -> alarm_ver -> bildirim -> bekle;
+
+    bekle -> tehdit_var; // Sürekli döngü
+
+    // Alarm sıfırlama
+    alarm_sifirla -> end [label="Evet"];
+    alarm_sifirla -> bekle [label="Hayır"];
+}
+```
+
+---
+
+💡 **Notlar:**
+
+* **Oval (ellipse):** Başla / Bitir
+* **Paralelkenar:** Girdi / Çıktı adımları
+* **Kutu (box):** İşlem adımları (alarm ver, seviye belirle)
+* **Elmas (diamond):** Koşul / karar noktaları
+* **Döngü:** “Bekle ve tekrar kontrol et” ile sensör kontrolü sürekli tekrarlanır.
+
+---
+
+İstersen ben bunu senin için **PNG diyagramı** hâline getirip gösterebilirim, böylece ödevine direkt ekleyebilirsin.
+Bunu yapayım mı?

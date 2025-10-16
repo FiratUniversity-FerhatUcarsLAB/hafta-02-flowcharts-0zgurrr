@@ -1,0 +1,92 @@
+Tabii Özgür! 😊
+Senin verdiğin **Öğrenci Ders Kayıt Sistemi** için Graphviz DOT kodunu hazırladım. Bu diyagram, öğrencinin girişinden ders seçim, kontroller ve kayıt onayına kadar tüm akışı görselleştirir.
+
+---
+
+```dot
+digraph OgrenciDersKayit {
+    rankdir=TB;
+    node [fontname="Helvetica", fontsize=10, style=filled, fillcolor=white];
+
+    // Başla / Bitir
+    start [shape=ellipse, label="Başla"];
+    end [shape=ellipse, label="Bitir"];
+
+    // Girdi / Çıktı
+    ogrenci_giris [shape=parallelogram, label="Öğrenci No ve Şifre gir"];
+    ders_listesi [shape=parallelogram, label="Ders listesini göster"];
+    ders_secim [shape=parallelogram, label="Ders seç / Ders çıkar"];
+    danisman_onayi [shape=parallelogram, label="Danışman onayı al"];
+    kayit_ozeti [shape=parallelogram, label="Kayıt özetini göster ve onay al"];
+    tekrar_ders [shape=parallelogram, label="Başka ders seçmek ister misiniz? (E/H)"];
+
+    // İşlem kutuları
+    validate_login [shape=box, label="Giriş doğrula"];
+    ders_ekle [shape=box, label="Dersi ekle"];
+    ders_cikar [shape=box, label="Dersi çıkar"];
+
+    // Kararlar (diamond)
+    login_valid [shape=diamond, label="Giriş geçerli mi?"];
+    kontenjan_check [shape=diamond, label="Kontenjan var mı?"];
+    onkosul_check [shape=diamond, label="Ön koşul tamam mı?"];
+    zaman_check [shape=diamond, label="Zaman çakışıyor mu?"];
+    kredi_check [shape=diamond, label="Kredi limiti aşılır mı?"];
+    danisman_gerekli [shape=diamond, label="Danışman onayı gerekli mi?"];
+    tekrar_ders_decision [shape=diamond, label="Başka ders seçilecek mi?"];
+    kayit_onay [shape=diamond, label="Kayıt onayı?"];
+
+    // Akış bağlantıları
+    start -> ogrenci_giris -> validate_login -> login_valid;
+    login_valid -> end [label="Hayır"];
+    login_valid -> ders_listesi [label="Evet"];
+
+    // Ders seçimi döngüsü
+    ders_listesi -> ders_secim;
+    ders_secim -> kontenjan_check;
+    kontenjan_check -> ders_ekle [label="Evet"];
+    kontenjan_check -> ders_listesi [label="Hayır"];
+    
+    ders_ekle -> onkosul_check;
+    onkosul_check -> ders_ekle [label="Hayır"];
+    onkosul_check -> zaman_check [label="Evet"];
+
+    zaman_check -> ders_ekle [label="Evet"];
+    zaman_check -> ders_secim [label="Hayır"];
+
+    ders_ekle -> kredi_check;
+    kredi_check -> ders_ekle [label="Hayır"];
+    kredi_check -> danisman_gerekli [label="Evet"];
+
+    danisman_gerekli -> danisman_onayi [label="Evet"];
+    danisman_gerekli -> tekrar_ders [label="Hayır"];
+    danisman_onayi -> tekrar_ders;
+
+    tekrar_ders -> tekrar_ders_decision;
+    tekrar_ders_decision -> ders_listesi [label="Evet"];
+    tekrar_ders_decision -> kayit_ozeti [label="Hayır"];
+
+    kayit_ozeti -> kayit_onay;
+    kayit_onay -> end [label="Evet"];
+    kayit_onay -> ders_listesi [label="Hayır"];
+}
+```
+
+---
+
+💡 **Notlar:**
+
+* **Oval (ellipse):** Başla / Bitir
+* **Paralelkenar:** Girdi / Çıktı adımları
+* **Kutu (box):** İşlem adımları (ders ekle, ders çıkar)
+* **Elmas (diamond):** Karar / koşul noktaları
+
+Bu kodu `.dot` olarak kaydedip **Graphviz** ile PNG veya PDF hâline getirebilirsin:
+
+```bash
+dot -Tpng ogrenci_kayit.dot -o ogrenci_kayit.png
+```
+
+---
+
+İstersen ben bunu senin için **PNG görseli** hâline getirip gösterebilirim, böylece ödevine direkt ekleyebilirsin.
+Bunu yapayım mı?

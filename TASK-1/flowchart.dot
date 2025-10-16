@@ -1,0 +1,60 @@
+digraph ATM_Para_Cekme {
+    rankdir=TB;
+    node [fontname="Arial", fontsize=11];
+
+    /* Düğüm tanımları */
+    Start [shape=oval, label="BAŞLA"];
+    InsertCard [shape=parallelogram, label="Kart Tak"];
+    AskPIN [shape=parallelogram, label="PIN Gir"];
+    CheckPIN [shape=diamond, label="PIN Doğru mu?"];
+    WrongPIN [shape=box, label="PIN Deneme Sayısı +1"];
+    CheckAttempts [shape=diamond, label="3 Hatalı PIN oldu mu?"];
+    BlockCard [shape=box, label="Kart bloke edildi"];
+    ShowBalance [shape=parallelogram, label="Bakiyeyi Göster"];
+    EnterAmount [shape=parallelogram, label="Çekilecek Tutar Gir"];
+    CheckMultiple20 [shape=diamond, label="20 TL'nin katı mı?"];
+    CheckDailyLimit [shape=diamond, label="Günlük limit aşıldı mı?"];
+    CheckBalance [shape=diamond, label="Bakiye yeterli mi?"];
+    GiveMoney [shape=box, label="Para Ver ve Bakiyeyi Güncelle"];
+    PrintReceipt [shape=box, label="Makbuz Yazdır"];
+    AskAnother [shape=diamond, label="Başka işlem yapmak ister misiniz?"];
+    EjectCard [shape=box, label="Kartı İade Et"];
+    End [shape=oval, label="BİTİR"];
+
+    /* Akışlar */
+    Start -> InsertCard -> AskPIN -> CheckPIN;
+
+    /* PIN doğruysa */
+    CheckPIN -> ShowBalance [label="Evet"];
+
+    /* PIN yanlışsa */
+    CheckPIN -> WrongPIN [label="Hayır"];
+    WrongPIN -> CheckAttempts;
+    CheckAttempts -> BlockCard [label="Evet"];
+    CheckAttempts -> AskPIN [label="Hayır"];
+    BlockCard -> EjectCard -> End;
+
+    /* Bakiye görüntülendikten sonra */
+    ShowBalance -> EnterAmount;
+
+    /* 20 TL'nin katı mı kontrolü */
+    EnterAmount -> CheckMultiple20;
+    CheckMultiple20 -> CheckDailyLimit [label="Evet"];
+    CheckMultiple20 -> EnterAmount [label="Hayır\n(Tekrar gir)"];
+
+    /* Günlük limit kontrolü */
+    CheckDailyLimit -> CheckBalance [label="Hayır"];
+    CheckDailyLimit -> EnterAmount [label="Evet\n(Tekrar gir)"];
+
+    /* Bakiye kontrolü */
+    CheckBalance -> GiveMoney [label="Evet"];
+    CheckBalance -> EnterAmount [label="Hayır\n(Yetersiz bakiye)"];
+
+    /* Para verme ve makbuz işlemleri */
+    GiveMoney -> PrintReceipt -> AskAnother;
+
+    /* Başka işlem döngüsü */
+    AskAnother -> ShowBalance [label="Evet"];
+    AskAnother -> EjectCard [label="Hayır"];
+    EjectCard -> End;
+}
